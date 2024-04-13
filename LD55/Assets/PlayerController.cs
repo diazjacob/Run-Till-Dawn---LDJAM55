@@ -4,22 +4,46 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header( "Physics Forces" )]
+    [SerializeField] private float _speedAddWhenGrounded = 10;
+    [SerializeField] private float _turningAuthority = 1;
 
-    [SerializeField] private float _walkForce;
-    [SerializeField] private float _sprintMultiplier;
-    [SerializeField] private float _jumpForce;
-    [SerializeField] private float _lookSensitivity;
-    [SerializeField] private bool _invertLookVert = true;
+    [Header("Raycast & Rotation")]
+    [SerializeField] private float _rotationLerpSpeed;
+    [SerializeField] private LayerMask _castLayerMask;
+    [SerializeField] private float _raycastDistance;
+    [SerializeField] private float _isGroundedDistanceThreshold = 2;
+
+    [Header("Turning")]
+    [SerializeField] private GameObject _frontWheel;
+    [SerializeField] private GameObject _backWheel;
+    [SerializeField] private float _wheelMaxAngle = 20;
+    [SerializeField] private Vector3 _overallWheelOffset;
+    [SerializeField] private float _frontWheelTurnSpeed;
+    [SerializeField] private float _bikeBodyTurnCoeff;
+    [SerializeField] private float _turnWheelGroundingCoeff;
+
+    private float _currentFrontWheelAngle;
+    private float _currentIdealFrontWheelAngle;
+
+    [SerializeField] private float _baseFOV;
+    [SerializeField] private float _FOVCoeff;
+
+    private Vector3 _groundNormal;
+    private Quaternion _groundIdealRot;
+    private float _currentGroundDistance;
+    [SerializeField] private bool _isGrounded;
 
     private Camera _cam;
     private Rigidbody _rb;
-    private Vector2 _prevMousePosition;
+
 
     void Start()
     {
         _cam = Camera.main;
         _rb = GetComponent<Rigidbody>();
 
+        //Cursor control and hiding
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
     }
@@ -27,37 +51,80 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        CheckMovement();
-        CheckLooking();
+        UpdateSteering();
+        UpdateBodyRotation();
+
+        UpdateSpeed();
+
+        _cam.fieldOfView = _baseFOV + _rb.velocity.magnitude * _FOVCoeff;
     }
 
-    private void CheckMovement()
+    private void UpdateSteering()
     {
-        Vector3 forward = Vector3.ProjectOnPlane( _cam.transform.forward, Vector3.up ).normalized;
-        Vector3 right = Vector3.Cross( forward, Vector3.up );
+        bool isTurning = false;
+        if( Input.GetKey( KeyCode.A ) || Input.GetKey( KeyCode.LeftArrow ))
+        {
+            _currentIdealFrontWheelAngle = -_wheelMaxAngle;
+            isTurning = true;
+            Debug.Log( "Turning LEFT" );
+        }
+        if( Input.GetKey( KeyCode.D ) || Input.GetKey( KeyCode.RightArrow ) )
+        {
+            _currentIdealFrontWheelAngle = _wheelMaxAngle;
+            isTurning = true;
+            Debug.Log( "Turning RIGHT" );
+        }
 
-        float sprintMultiplier = Input.GetKey( KeyCode.LeftShift ) ? _sprintMultiplier : 1;
+        if( !isTurning ) _currentIdealFrontWheelAngle = 0;
 
-        if( Input.GetKey( KeyCode.W ) )
-            _rb.AddForce( forward * _walkForce * sprintMultiplier );
-        if( Input.GetKey( KeyCode.S ) )
-            _rb.AddForce( -forward * _walkForce * sprintMultiplier );
-        if( Input.GetKey( KeyCode.A ) )
-            _rb.AddForce( right * _walkForce * sprintMultiplier );
-        if( Input.GetKey( KeyCode.D ) )
-            _rb.AddForce( -right * _walkForce * sprintMultiplier );
-        if( Input.GetKeyDown( KeyCode.Space ) )
-            _rb.AddForce( Vector3.up * _jumpForce );
+        _currentFrontWheelAngle = Mathf.Lerp( _currentFrontWheelAngle, _currentIdealFrontWheelAngle, Time.deltaTime * _frontWheelTurnSpeed );
+
+        _frontWheel.transform.rotation = transform.rotation * Quaternion.Euler( _overallWheelOffset.x, _overallWheelOffset.y, _overallWheelOffset.z ) * Quaternion.AngleAxis( _currentFrontWheelAngle, Vector3.right );
     }
-    /// <summary>
-    /// TEST?????
-    /// </summary>
 
-    private void CheckLooking()
+    private void UpdateBodyRotation()
     {
-        Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * _lookSensitivity;
+        RaycastHit hit;
 
-        _cam.transform.rotation = _cam.transform.rotation * Quaternion.Euler( mouseDelta.y * (_invertLookVert ? -1 : 1), mouseDelta.x, 0);
-        _cam.transform.rotation = Quaternion.Euler( _cam.transform.rotation.eulerAngles.x, _cam.transform.rotation.eulerAngles.y, 0 );
+        Debug.DrawRay( transform.position, Vector3.down, Color.blue );
+
+        if( Physics.Raycast( transform.position, Vector3.down, out hit, _raycastDistance, _castLayerMask ) )
+        {
+            Debug.DrawLine( hit.point, hit.point+Vector3.up, Color.yellow );
+            Debug.DrawLine( hit.point, hit.point + hit.normal, Color.red );
+            Debug.DrawLine( transform.position, transform.position + (Vector3.down*_raycastDistance), Color.white );
+
+            Debug.Log( "Did Hit" );
+
+            _groundNormal = hit.normal;
+            _currentGroundDistance = hit.distance;
+        }
+        else
+        {
+            _currentGroundDistance = float.PositiveInfinity;
+            _groundNormal = Vector3.up;
+        }
+
+        _groundIdealRot = Quaternion.AngleAxis( Vector3.Angle(_groundNormal, Vector3.up) - (_turnWheelGroundingCoeff * Vector3.Angle( -transform.forward, -Vector3.forward )), -transform.right );
+
+        Quaternion newRot = Quaternion.Lerp( transform.rotation, _groundIdealRot, _rotationLerpSpeed * Time.deltaTime );
+
+        transform.rotation = newRot * Quaternion.AngleAxis(_bikeBodyTurnCoeff * _currentFrontWheelAngle * Time.deltaTime, Vector3.up);
+
+    }
+
+    private void UpdateSpeed()
+    {
+        _isGrounded = ( _currentGroundDistance < _isGroundedDistanceThreshold );
+        Debug.Log( _currentGroundDistance + " || " + _isGroundedDistanceThreshold );
+
+
+        if( _isGrounded )
+        {
+            _rb.AddForce( -transform.forward * _speedAddWhenGrounded * Time.deltaTime * _turningAuthority * Mathf.Clamp01( Vector3.Dot( _rb.velocity, -transform.forward ) ) );
+            _rb.AddForce( -_rb.velocity * _turningAuthority * Mathf.Clamp01( Vector3.Dot( _rb.velocity, -transform.forward ) ) * Time.deltaTime );
+        }
+
+        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.white );
     }
 }
