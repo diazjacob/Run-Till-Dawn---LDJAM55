@@ -168,7 +168,7 @@ MonoBehaviour:
     m_Value: 0
   groundTint:
     m_OverrideState: 1
-    m_Value: {r: 0.9528302, g: 0.78125596, b: 0.6516999, a: 1}
+    m_Value: {r: 0.42827314, g: 0.5188679, b: 0.35488605, a: 1}
   groundColorTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -200,8 +200,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   horizonTint:
-    m_OverrideState: 0
-    m_Value: {r: 0.9245283, g: 0, b: 0, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.9764151, b: 0.9764151, a: 1}
   zenithTint:
     m_OverrideState: 0
     m_Value: {r: 0.6792453, g: 0.27233893, b: 0.27233893, a: 1}
@@ -307,7 +307,7 @@ MonoBehaviour:
     m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   tint:
     m_OverrideState: 1
-    m_Value: {r: 3.1409936, g: 2.2509317, b: 1.1112006, a: 1}
+    m_Value: {r: 3.2440073, g: 2.601511, b: 2.4117754, a: 1}
   maxFogDistance:
     m_OverrideState: 1
     m_Value: 2000
@@ -334,7 +334,7 @@ MonoBehaviour:
     m_Value: 0
   albedo:
     m_OverrideState: 1
-    m_Value: {r: 0.9339623, g: 0.85072535, b: 0.6740388, a: 1}
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
   globalLightProbeDimmer:
     m_OverrideState: 0
     m_Value: 1
@@ -389,6 +389,8 @@ MonoBehaviour:
   - {fileID: 3731614677878058803}
   - {fileID: -7542834588644411803}
   - {fileID: -4248945307932559413}
+  - {fileID: 5354372621389489215}
+  - {fileID: 4326576376692785147}
 --- !u!114 &1142777632297148762
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -466,6 +468,59 @@ MonoBehaviour:
   m_HighQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &4326576376692785147
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598e2d32e2c7b0c418e030c3236d663a, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 1
+  quality:
+    m_OverrideState: 1
+    m_Value: 2
+  spectralLut:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.092
+  m_MaxSamples:
+    m_OverrideState: 1
+    m_Value: 12
+--- !u!114 &5354372621389489215
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1bfcd0f0fa7b8468f281d6bbbaf320, type: 3}
+  m_Name: LensDistortion
+  m_EditorClassIdentifier: 
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.16
+  xMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+  yMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+  center:
+    m_OverrideState: 0
+    m_Value: {x: 0.5, y: 0.5}
+  scale:
+    m_OverrideState: 0
+    m_Value: 1.36
 --- !u!114 &7642060734654139733
 MonoBehaviour:
   m_ObjectHideFlags: 3

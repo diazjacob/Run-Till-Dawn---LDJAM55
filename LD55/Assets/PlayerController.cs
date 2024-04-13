@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -84,6 +85,9 @@ public class PlayerController : MonoBehaviour
             _startupTimer += Time.deltaTime;
             _lastFrameVelocity = _rb.velocity;
         }
+
+        //Quick Level Restart
+        if( Input.GetKeyDown( KeyCode.Escape ) ) SceneManager.LoadScene("OutdoorsScene");
         
     }
 
