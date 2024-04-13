@@ -49,6 +49,9 @@ public class PlayerController : MonoBehaviour
         if( Input.GetKeyDown( KeyCode.Space ) )
             _rb.AddForce( Vector3.up * _jumpForce );
     }
+    /// <summary>
+    /// TEST?????
+    /// </summary>
 
     private void CheckLooking()
     {
