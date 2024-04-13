@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [Header( "Physics Forces" )]
     [SerializeField] private float _speedAddWhenGrounded = 10;
     [SerializeField] private float _turningAuthority = 1;
+    [SerializeField] private Vector3 _startingVelocity;
 
     [Header("Raycast & Rotation")]
     [SerializeField] private float _rotationLerpSpeed;
@@ -27,6 +28,8 @@ public class PlayerController : MonoBehaviour
     [Header( "Crash Settings" )]
     [SerializeField] private float _minimumCrashVelocityChange;
     [SerializeField] private bool _hasCrashed;
+    [SerializeField] private float _gameStartCrashdetectionDelay = 5f;
+    private float _startupTimer;
     private Vector3 _lastFrameVelocity;
 
     private float _currentFrontWheelAngle;
@@ -48,6 +51,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        _rb.velocity = _startingVelocity;
 
         //Cursor control and hiding
         Cursor.visible = false;
@@ -72,8 +77,14 @@ public class PlayerController : MonoBehaviour
             _camControl.isPosLerping = false;
         }
 
-        CheckHasCrashed();
-
+        if( _startupTimer > _gameStartCrashdetectionDelay )
+            CheckHasCrashed();
+        else
+        {
+            _startupTimer += Time.deltaTime;
+            _lastFrameVelocity = _rb.velocity;
+        }
+        
     }
 
     private void UpdateSteering()

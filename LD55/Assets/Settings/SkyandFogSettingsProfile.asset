@@ -21,13 +21,13 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 3.56
+    m_Value: 4
   directLightingStrength:
     m_OverrideState: 1
-    m_Value: 0.039
+    m_Value: 0.408
   radius:
     m_OverrideState: 1
-    m_Value: 0.94
+    m_Value: 0.72
   spatialBilateralAggressiveness:
     m_OverrideState: 0
     m_Value: 0.15
@@ -132,7 +132,7 @@ MonoBehaviour:
     m_Value: 1
   seaLevel:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.2
   planetaryRadius:
     m_OverrideState: 0
     m_Value: 6378100
@@ -168,7 +168,7 @@ MonoBehaviour:
     m_Value: 0
   groundTint:
     m_OverrideState: 1
-    m_Value: {r: 0.9528302, g: 0.76020956, b: 0.61574405, a: 1}
+    m_Value: {r: 0.9528302, g: 0.78125596, b: 0.6516999, a: 1}
   groundColorTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -233,7 +233,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.13
+    m_Value: 0.461
   response:
     m_OverrideState: 0
     m_Value: 0.8
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c1be1b6c95cd2e41b27903b9270817f, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
     m_Value: 0
@@ -264,10 +264,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.375
+    m_Value: 0.471
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.117
+    m_Value: 0.259
   roundness:
     m_OverrideState: 1
     m_Value: 1
@@ -441,10 +441,10 @@ MonoBehaviour:
     m_Value: 0.87
   intensity:
     m_OverrideState: 1
-    m_Value: 0.678
+    m_Value: 1
   scatter:
     m_OverrideState: 1
-    m_Value: 0.483
+    m_Value: 0.319
   tint:
     m_OverrideState: 0
     m_Value: {r: 0.6095327, g: 1, b: 0.3915094, a: 1}
