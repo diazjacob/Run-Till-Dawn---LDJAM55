@@ -44,8 +44,10 @@ public class PlayerController : MonoBehaviour
     private Quaternion _groundIdealRot;
     private float _currentGroundDistance;
     [SerializeField] private bool _isGrounded;
+    [SerializeField] private bool _gameStarted;
 
     [SerializeField] private Camera _cam;
+    [SerializeField] private RagdollController _ragdoll;
     private Rigidbody _rb;
     [SerializeField] private CameraController _camControl;
 
@@ -53,43 +55,63 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        _rb.velocity = _startingVelocity;
+        
 
         //Cursor control and hiding
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+
+        //_ragdoll.SetRBOnOff( false );
     }
 
 
     void Update()
     {
-        if(!_hasCrashed )
+        if( _gameStarted )
         {
-            UpdateSteering();
-            UpdateBodyRotation();
+            if( !_hasCrashed )
+            {
+                UpdateSteering();
+                UpdateBodyRotation();
 
-            UpdateSpeed();
+                UpdateSpeed();
 
-            _cam.fieldOfView = Mathf.Clamp( _baseFOV + _rb.velocity.magnitude * _FOVCoeff, _baseFOV, _FOVCap );
+                _cam.fieldOfView = Mathf.Clamp( _baseFOV + _rb.velocity.magnitude * _FOVCoeff, _baseFOV, _FOVCap );
+            }
+            else
+            {
+                _rb.freezeRotation = false;
+                _camControl.isPosLerping = false;
+            }
+
+            if( _startupTimer > _gameStartCrashdetectionDelay )
+                CheckHasCrashed();
+            else
+            {
+                _startupTimer += Time.deltaTime;
+                _lastFrameVelocity = _rb.velocity;
+            }
+
         }
-        else
-        {
-            _rb.freezeRotation = false;
-            _camControl.isPosLerping = false;
-        }
 
-        if( _startupTimer > _gameStartCrashdetectionDelay )
-            CheckHasCrashed();
-        else
-        {
-            _startupTimer += Time.deltaTime;
-            _lastFrameVelocity = _rb.velocity;
-        }
-
-        //Quick Level Restart
+        //Quick Level Restart DEBUG
         if( Input.GetKeyDown( KeyCode.Escape ) ) SceneManager.LoadScene("OutdoorsScene");
         
     }
+
+    public void StartGame()
+    {
+        if( _rb != null )
+        {
+            _rb.isKinematic = false;
+            _gameStarted = true;
+            _rb.velocity = _startingVelocity;
+        }
+        else Debug.Log( "Error, Bike RB missing?" );
+
+    }
+
+    public bool IsGroundedAndPlaying() { return _isGrounded && _gameStarted; }
 
     private void UpdateSteering()
     {

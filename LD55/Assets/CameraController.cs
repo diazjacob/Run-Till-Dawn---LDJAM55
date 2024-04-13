@@ -34,5 +34,11 @@ public class CameraController : MonoBehaviour
         transform.rotation = Quaternion.Lerp( transform.rotation, Quaternion.LookRotation( _cameraLookTarget.transform.position - transform.position, Vector3.up ), Time.deltaTime * _cameraRotLerpSpeed);
     }
 
+    public void SetCameraPosAndLook(GameObject pos, GameObject look )
+    {
+        if( pos == null || look == null ) Debug.Log( "ERRORROR: CAMERA SUPPLIED INVALID LOOK OR POS TARGET OBJECTs" );
 
+        _cameraPosTarget = pos;
+        _cameraLookTarget = look;
+    }
 }
