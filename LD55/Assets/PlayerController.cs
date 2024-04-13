@@ -18,29 +18,35 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _frontWheel;
     [SerializeField] private GameObject _backWheel;
     [SerializeField] private float _wheelMaxAngle = 20;
+    [SerializeField] private float _totalDownhillTurnAngle = 60;
     [SerializeField] private Vector3 _overallWheelOffset;
     [SerializeField] private float _frontWheelTurnSpeed;
     [SerializeField] private float _bikeBodyTurnCoeff;
     [SerializeField] private float _turnWheelGroundingCoeff;
+
+    [Header( "Crash Settings" )]
+    [SerializeField] private float _minimumCrashVelocityChange;
+    [SerializeField] private bool _hasCrashed;
+    private Vector3 _lastFrameVelocity;
 
     private float _currentFrontWheelAngle;
     private float _currentIdealFrontWheelAngle;
 
     [SerializeField] private float _baseFOV;
     [SerializeField] private float _FOVCoeff;
+    [SerializeField] private float _FOVCap = 150f;
 
     private Vector3 _groundNormal;
     private Quaternion _groundIdealRot;
     private float _currentGroundDistance;
     [SerializeField] private bool _isGrounded;
 
-    private Camera _cam;
+    [SerializeField] private Camera _cam;
     private Rigidbody _rb;
-
+    [SerializeField] private CameraController _camControl;
 
     void Start()
     {
-        _cam = Camera.main;
         _rb = GetComponent<Rigidbody>();
 
         //Cursor control and hiding
@@ -51,12 +57,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        UpdateSteering();
-        UpdateBodyRotation();
+        if(!_hasCrashed )
+        {
+            UpdateSteering();
+            UpdateBodyRotation();
 
-        UpdateSpeed();
+            UpdateSpeed();
 
-        _cam.fieldOfView = _baseFOV + _rb.velocity.magnitude * _FOVCoeff;
+            _cam.fieldOfView = Mathf.Clamp( _baseFOV + _rb.velocity.magnitude * _FOVCoeff, _baseFOV, _FOVCap );
+        }
+        else
+        {
+            _rb.freezeRotation = false;
+            _camControl.isPosLerping = false;
+        }
+
+        CheckHasCrashed();
+
     }
 
     private void UpdateSteering()
@@ -75,7 +92,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log( "Turning RIGHT" );
         }
 
-        if( !isTurning ) _currentIdealFrontWheelAngle = 0;
+        if( !isTurning || Vector3.Angle(-transform.forward, -Vector3.forward) > _totalDownhillTurnAngle) _currentIdealFrontWheelAngle = 0;
 
         _currentFrontWheelAngle = Mathf.Lerp( _currentFrontWheelAngle, _currentIdealFrontWheelAngle, Time.deltaTime * _frontWheelTurnSpeed );
 
@@ -126,5 +143,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Debug.DrawLine(transform.position, transform.position + transform.forward, Color.white );
+    }
+
+    private void CheckHasCrashed()
+    {
+        if( ( _rb.velocity - _lastFrameVelocity ).magnitude > _minimumCrashVelocityChange ) _hasCrashed = true;
+        _lastFrameVelocity = _rb.velocity;
     }
 }
