@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speedAddWhenGrounded = 10;
     [SerializeField] private float _turningAuthority = 1;
     [SerializeField] private Vector3 _startingVelocity;
+    [SerializeField] private float _crashMultiplier;
+
+    [Space]
+    [SerializeField] private Vector3 _forceAddWhenInAir;
 
     [Header("Raycast & Rotation")]
     [SerializeField] private float _rotationLerpSpeed;
@@ -80,8 +84,18 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                if( _camControl.crashCam == false) _ragdoll.MultiplyVelocity( _crashMultiplier );
+
+                //CRASHED!
                 _rb.freezeRotation = false;
-                _camControl.isPosLerping = false;
+                //_camControl.isPosLerping = false;
+                _camControl.crashCam = true;
+                _camControl.SetCameraPosAndLook( _ragdoll.gameObject, _ragdoll.gameObject);
+
+                _ragdoll.transform.parent = null;
+                _ragdoll.SetRBOnOff( true );
+                
+                _ragdoll.DisableAnims();
             }
 
             if( _startupTimer > _gameStartCrashdetectionDelay )
@@ -93,6 +107,8 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+
+        if( !_isGrounded && _gameStarted ) _rb.AddForce( _forceAddWhenInAir * Time.deltaTime );
 
         //Quick Level Restart DEBUG
         if( Input.GetKeyDown( KeyCode.Escape ) ) SceneManager.LoadScene("OutdoorsScene");
@@ -186,5 +202,6 @@ public class PlayerController : MonoBehaviour
     {
         if( ( _rb.velocity - _lastFrameVelocity ).magnitude > _minimumCrashVelocityChange ) _hasCrashed = true;
         _lastFrameVelocity = _rb.velocity;
+        
     }
 }

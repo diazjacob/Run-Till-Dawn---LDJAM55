@@ -8,16 +8,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerCharacter;
     [SerializeField] private Animator _playerAnimator;
     [SerializeField] private CameraController _cameraController;
+    [SerializeField] private Light _sun;
 
     [SerializeField] private GameState[] _states;
     [SerializeField] private int _currentGameState = 0;
     [SerializeField] private int _playState;
+
+    private bool _sunRed;
+    [SerializeField] private Color _sunStartingColor;
+    [SerializeField] private Color _sunEndColor;
+    [SerializeField] private float _sunChangeTime = 3f;
 
 
     // Start is called before the first frame update
     void Start()
     {
         UpdateGameState();
+        _sun.color = _sunStartingColor;
     }
 
     // Update is called once per frame
@@ -28,6 +35,9 @@ public class GameManager : MonoBehaviour
             _currentGameState++;
             UpdateGameState();
         }
+
+        if( _sunRed ) _sun = Color.Lerp( _sun.color, _sunEndColor, Time.deltaTime * _sunChangeTime );
+        
     }
 
     private void UpdateGameState()
@@ -46,6 +56,12 @@ public class GameManager : MonoBehaviour
                 case 2:
                     State3();
                     break;
+                case 3:
+                    State4();
+                    break;
+                case 4:
+                    State5();
+                    break;
             }
         }
         else Debug.Log( "WHAT, THE GAME STATE IS BADD" );
@@ -59,13 +75,32 @@ public class GameManager : MonoBehaviour
 
     private void State2()
     {
+        
+    }
+
+    private void State3()
+    {
+        _sunRed = true;
+    }
+
+    private void State4()
+    {
         _playerAnimator.SetBool( "IdleToScared", true );
         _playerCharacter.transform.rotation = Quaternion.Euler( -90, -177, 0 );
     }
 
-    private void State3()
+    private void State5()
 {
+        _playerAnimator.SetBool( "Riding", true );
+        _playerCharacter.transform.position = _playerBike.transform.position - new Vector3(0,1,0);
+        _playerCharacter.transform.parent = _playerBike.transform;
+        _playerCharacter.transform.rotation = Quaternion.Euler( 180, 180, 0 );
         _playerBike.StartGame();
+    }
+
+    public void SetSunValue( float f)
+    {
+
     }
 }
 

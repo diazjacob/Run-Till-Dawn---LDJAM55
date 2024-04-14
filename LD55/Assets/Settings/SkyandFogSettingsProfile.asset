@@ -21,13 +21,13 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2.56
   directLightingStrength:
     m_OverrideState: 1
-    m_Value: 0.408
+    m_Value: 0.383
   radius:
     m_OverrideState: 1
-    m_Value: 0.72
+    m_Value: 1.4
   spatialBilateralAggressiveness:
     m_OverrideState: 0
     m_Value: 0.15
@@ -168,7 +168,7 @@ MonoBehaviour:
     m_Value: 0
   groundTint:
     m_OverrideState: 1
-    m_Value: {r: 0.42827314, g: 0.5188679, b: 0.35488605, a: 1}
+    m_Value: {r: 0.487085, g: 0.5176471, b: 0.3529412, a: 1}
   groundColorTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}

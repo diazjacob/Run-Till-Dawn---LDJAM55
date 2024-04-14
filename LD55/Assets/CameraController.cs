@@ -7,8 +7,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _cameraPosLerpSpeed;
     [SerializeField] private float _cameraRotLerpSpeed;
     [SerializeField] private GameObject _cameraPosTarget;
+    private Vector3 _camPosTarget;
     [SerializeField] private GameObject _cameraLookTarget;
+    [SerializeField] private Vector3 _crashAbsoluteCAmeraOffset = new Vector3(5,10);
     public bool isPosLerping = true;
+    public bool crashCam = false;
 
     void Start()
     {
@@ -17,16 +20,21 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if( crashCam ) _camPosTarget = _cameraPosTarget.transform.position + _crashAbsoluteCAmeraOffset;
+        else _camPosTarget = _cameraPosTarget.transform.position;
+
         if( isPosLerping )
         {
             UpdateCameraPosLerp();
         }
         UpdateCameraRotLerp();
+
+        
     }
 
     private void UpdateCameraPosLerp()
     {
-        transform.position = Vector3.Lerp( transform.position, _cameraPosTarget.transform.position, Time.deltaTime * _cameraPosLerpSpeed );
+        transform.position = Vector3.Lerp( transform.position, _camPosTarget, Time.deltaTime * _cameraPosLerpSpeed );
     }
 
     private void UpdateCameraRotLerp()
@@ -41,4 +49,6 @@ public class CameraController : MonoBehaviour
         _cameraPosTarget = pos;
         _cameraLookTarget = look;
     }
+
+
 }
