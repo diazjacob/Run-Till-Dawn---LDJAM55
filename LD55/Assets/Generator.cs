@@ -13,32 +13,53 @@ public class Generator : MonoBehaviour
     public List<GameObject> allInstantiatedTree = new List<GameObject>();
     public List<GameObject> allInstantiatedRock = new List<GameObject>();
 
+    public string noiseString;
+
+    public string savedNoiseString;
+    public int noiseValue = -1;
+
+    [SerializeField] private FastNoiseUnity _noise;
+    [SerializeField] private FastNoiseUnity _otherNoise;
+
     // Start is called before the first frame update
     void Start()
     {
+        //_noise = GetComponent<FastNoiseUnity>();
+
         GenerateAll();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (savedNoiseString != noiseString )
+        {
+            savedNoiseString = noiseString;
+            noiseValue = 0;
+            foreach (char c in savedNoiseString )
+            {
+                noiseValue += ( int )c;
+
+                _noise.seed = noiseValue;
+                _otherNoise.seed = noiseValue;
+            }
+        }
     }
 
     private void GenerateAll()
     {
-        for(int i = 0; i < grassGen.generateIterations; i++ )
+        float yVal = Mathf.PI + 100;
+        int iterations = grassGen.GetGenerationIterations(savedNoiseString.Length);
+
+        for(int i = 0; i < iterations; i++ )
         {
             RaycastHit hit;
 
-            Vector3 testPoint = GetTestPoint() + Vector3.up * 3000;
-            print( testPoint );
+            Vector3 testPoint = GetTestPoint(yVal + i * i, i ) + Vector3.up * 3000;
 
             if( Physics.Raycast( testPoint, Vector3.down, out hit, Mathf.Infinity, grassGen.generateLAYERMASK ) )
             {
                 Debug.DrawLine( hit.point, hit.point + Vector3.up, Color.yellow );
-
-                Debug.Log( "Did Hit" );
 
                 var obj = Instantiate( grassGen.objs[Random.Range( 0, grassGen.objs.Length )], hit.point, Quaternion.LookRotation(Vector3.forward, hit.normal) * Quaternion.AngleAxis( Random.value * 360, Vector3.up ), transform );
                 obj.transform.localScale = Vector3.one * grassGen.scale;
@@ -47,18 +68,19 @@ public class Generator : MonoBehaviour
 
             }
         }
-        for( int i = 0; i < treeGen.generateIterations; i++ )
+
+        yVal = 100 * Mathf.PI;
+        iterations = treeGen.GetGenerationIterations( savedNoiseString.Length );
+
+        for( int i = 0; i < iterations; i++ )
         {
             RaycastHit hit;
 
-            Vector3 testPoint = GetTestPoint() + Vector3.up * 3000;
-            print( testPoint );
+            Vector3 testPoint = GetTestPoint( yVal + i*i, i * Mathf.PI ) + Vector3.up * 3000;
 
             if( Physics.Raycast( testPoint, Vector3.down, out hit, Mathf.Infinity, treeGen.generateLAYERMASK ) )
             {
                 Debug.DrawLine( hit.point, hit.point + Vector3.up, Color.yellow );
-
-                Debug.Log( "Did Hit" );
 
                 var obj = Instantiate( treeGen.objs[Random.Range( 0, treeGen.objs.Length )], hit.point, Quaternion.AngleAxis( Random.value * 360, Vector3.up ), transform );
                 obj.transform.localScale = Vector3.one * treeGen.scale;
@@ -67,18 +89,19 @@ public class Generator : MonoBehaviour
 
             }
         }
-        for( int i = 0; i < rockGen.generateIterations; i++ )
+
+        yVal = 200 * Mathf.PI;
+        iterations = rockGen.GetGenerationIterations( savedNoiseString.Length );
+
+        for( int i = 0; i < iterations; i++ )
         {
             RaycastHit hit;
 
-            Vector3 testPoint = GetTestPoint() + Vector3.up * 3000;
-            print( testPoint );
+            Vector3 testPoint = GetTestPoint( yVal + i * i, i) + Vector3.up * 3000;
 
             if( Physics.Raycast( testPoint, Vector3.down, out hit, Mathf.Infinity, rockGen.generateLAYERMASK ) )
             {
                 Debug.DrawLine( hit.point, hit.point + Vector3.up, Color.yellow );
-
-                Debug.Log( "Did Hit" );
 
                 var obj = Instantiate( rockGen.objs[Random.Range( 0, rockGen.objs.Length )], hit.point, Quaternion.LookRotation( Vector3.forward, hit.normal ) * Quaternion.AngleAxis( Random.value * 360, Vector3.up ), transform );
                 obj.transform.localScale = Vector3.one * rockGen.scale;
@@ -90,21 +113,28 @@ public class Generator : MonoBehaviour
 
     }
 
-    private Vector3 GetTestPoint()
+    private Vector3 GetTestPoint(float x, float z )
     {
+        Debug.Log( ( _noise.fastNoise.GetNoise( x, x ) + 1 ) / 2f + " || " + ( _otherNoise.fastNoise.GetNoise( z, z ) + 1 ) / 2f );
         return new Vector3(
-            Mathf.Lerp( topLeft.transform.position.x, bottomRight.transform.position.x, Random.value ),
+            Mathf.Lerp( topLeft.transform.position.x, bottomRight.transform.position.x, (_noise.fastNoise.GetNoise(x,x) + 1)/2f ),
             1000,
-            Mathf.Lerp( topLeft.transform.position.z, bottomRight.transform.position.z, Random.value ) );
+            Mathf.Lerp( topLeft.transform.position.z, bottomRight.transform.position.z, (_otherNoise.fastNoise.GetNoise(z,z) + 1 ) / 2f ) );
     }
 }
 
 [System.Serializable]
 public class GenerationGroup
 {
-    public float generateIterations;
+    public int generateBaseIterations;
+    public int generateIterationAdditions;
     public float generatePosRandomness;
     public LayerMask generateLAYERMASK;
     public GameObject[] objs;
     public float scale;
+
+    public int GetGenerationIterations( int num)
+    {
+        return generateBaseIterations + (num * generateIterationAdditions);
+    }
 }

@@ -232,7 +232,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateSpeed()
     {
         _isGrounded = ( _currentGroundDistance < _isGroundedDistanceThreshold );
-        Debug.Log( _currentGroundDistance + " || " + _isGroundedDistanceThreshold );
+        //Debug.Log( _currentGroundDistance + " || " + _isGroundedDistanceThreshold );
 
 
         if( _isGrounded )

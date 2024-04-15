@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3616, g: 325.0784, b: 430.26373, a: 1}
+  m_IndirectSpecularColor: {r: 1.0358173, g: 0.90736115, b: 0.7550651, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1542,7 +1542,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &432432460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,131 +1893,6 @@ Transform:
   - {fileID: 1460987048}
   m_Father: {fileID: 250627892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &530952211
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 24111.227
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 24111.227
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 24111.227
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: a5a738fa3e673e94a91ea1a65bfd1dda, type: 2}
-    - target: {fileID: 919132149155446097, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_Name
-      value: terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 530952213}
-  m_SourcePrefab: {fileID: 100100000, guid: fb61ae05e4da8ec48a6b59d3a19006bf, type: 3}
---- !u!1 &530952212 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fb61ae05e4da8ec48a6b59d3a19006bf,
-    type: 3}
-  m_PrefabInstance: {fileID: 530952211}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &530952213
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530952212}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -462981019419857548, guid: fb61ae05e4da8ec48a6b59d3a19006bf, type: 3}
 --- !u!4 &544375835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 408618, guid: 6d23df1faae61f740b13b14f54960322,
@@ -5344,6 +5219,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1553759297}
   - component: {fileID: 1553759298}
+  - component: {fileID: 1553759299}
+  - component: {fileID: 1553759300}
   m_Layer: 0
   m_Name: _STATICS
   m_TagString: Untagged
@@ -5432,7 +5309,8 @@ MonoBehaviour:
   topLeft: {fileID: 244364403}
   bottomRight: {fileID: 2097139319}
   grassGen:
-    generateIterations: 23000
+    generateBaseIterations: 30000
+    generateIterationAdditions: 1000
     generatePosRandomness: 5
     generateLAYERMASK:
       serializedVersion: 2
@@ -5450,7 +5328,8 @@ MonoBehaviour:
     - {fileID: 159478, guid: a0caa2e1a3f23f049b941c02c02d2293, type: 3}
     scale: 36
   treeGen:
-    generateIterations: 5500
+    generateBaseIterations: 1100
+    generateIterationAdditions: 350
     generatePosRandomness: 5
     generateLAYERMASK:
       serializedVersion: 2
@@ -5479,7 +5358,8 @@ MonoBehaviour:
     - {fileID: 197984, guid: 384ad0c6e73a68a44ac967344c9efc2c, type: 3}
     scale: 18
   rockGen:
-    generateIterations: 1700
+    generateBaseIterations: 1000
+    generateIterationAdditions: 200
     generatePosRandomness: 12
     generateLAYERMASK:
       serializedVersion: 2
@@ -5509,6 +5389,75 @@ MonoBehaviour:
   allInstantiatedGrass: []
   allInstantiatedTree: []
   allInstantiatedRock: []
+  noiseString: jasdhfas
+  savedNoiseString: jasdhfas
+  noiseValue: 1237312
+  _noise: {fileID: 1553759299}
+  _otherNoise: {fileID: 1553759300}
+--- !u!114 &1553759299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553759296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4769e140e33119d42aff1561d9dd7ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseName: Default Noise
+  seed: 1619
+  frequency: 0.43
+  interp: 2
+  noiseType: 5
+  octaves: 3
+  lacunarity: 2
+  gain: 0.5
+  fractalType: 0
+  cellularDistanceFunction: 0
+  cellularReturnType: 0
+  cellularNoiseLookup: {fileID: 0}
+  cellularDistanceIndex0: 0
+  cellularDistanceIndex1: 1
+  cellularJitter: 0.45
+  gradientPerturbAmp: 1
+  generalSettingsFold: 1
+  fractalSettingsFold: 0
+  cellularSettingsFold: 0
+  positionWarpSettingsFold: 0
+--- !u!114 &1553759300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553759296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4769e140e33119d42aff1561d9dd7ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseName: Default Noise
+  seed: 1387
+  frequency: 0.31
+  interp: 2
+  noiseType: 3
+  octaves: 3
+  lacunarity: 2
+  gain: 0.5
+  fractalType: 0
+  cellularDistanceFunction: 0
+  cellularReturnType: 0
+  cellularNoiseLookup: {fileID: 0}
+  cellularDistanceIndex0: 0
+  cellularDistanceIndex1: 1
+  cellularJitter: 0.45
+  gradientPerturbAmp: 1
+  generalSettingsFold: 1
+  fractalSettingsFold: 0
+  cellularSettingsFold: 0
+  positionWarpSettingsFold: 0
 --- !u!1001 &1562951856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8380,6 +8329,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4154050283075429862, guid: 60ba109689fe2a941947d7e6169b1059,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8168738802953878813, guid: 60ba109689fe2a941947d7e6169b1059,
         type: 3}
       propertyPath: _cam
@@ -9576,7 +9530,6 @@ SceneRoots:
   - {fileID: 1621842544}
   - {fileID: 2013410475}
   - {fileID: 4403258910213055053}
-  - {fileID: 530952211}
   - {fileID: 388471241}
   - {fileID: 2078977546}
   - {fileID: 813605795}
