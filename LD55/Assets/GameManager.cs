@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if( Input.GetKeyDown( KeyCode.Space ) )
+        if( Input.GetKeyDown( KeyCode.Space ) && _currentGameState < 5 )
         {
             _currentGameState++;
             UpdateGameState();
@@ -94,13 +94,15 @@ public class GameManager : MonoBehaviour
         _playerCharacter.transform.rotation = Quaternion.Euler( -90, -177, 0 );
     }
 
-    private void State5()
-{
+    public void State5()
+    {
         _playerAnimator.SetBool( "Riding", true );
         _playerCharacter.transform.position = _playerBike.transform.position - new Vector3(0,1,0);
         _playerCharacter.transform.parent = _playerBike.transform;
         _playerCharacter.transform.rotation = Quaternion.Euler( 180, 180, 0 );
         _playerBike.StartGame();
+        _cameraController.SetCameraPosAndLook( _states[4]._camPos, _states[4]._camTarget );
+
     }
 
     public void SetSunValue( float f)

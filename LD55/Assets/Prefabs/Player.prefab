@@ -5565,8 +5565,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedAddWhenGrounded: 1550
   _turningAuthority: 120
-  _startingVelocity: {x: 0, y: -20, z: -25}
-  _crashMultiplier: 16
+  _startingVelocity: {x: 0, y: -9, z: -21}
+  _crashMultiplier: 20
   _forceAddWhenInAir: {x: 0, y: -5000, z: 10000}
   _rotationLerpSpeed: 1.45
   _castLayerMask:
@@ -5585,6 +5585,7 @@ MonoBehaviour:
   _minimumCrashVelocityChange: 10
   _hasCrashed: 0
   _gameStartCrashdetectionDelay: 5
+  _crashCamFocusObj: {fileID: 0}
   _baseFOV: 60
   _FOVCoeff: 0.2
   _FOVCap: 160

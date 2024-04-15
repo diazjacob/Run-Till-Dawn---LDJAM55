@@ -32,6 +32,11 @@ public class CameraController : MonoBehaviour
         
     }
 
+    public void ResetCam()
+    {
+        transform.position = _cameraLookTarget.transform.position;
+    }
+
     private void UpdateCameraPosLerp()
     {
         transform.position = Vector3.Lerp( transform.position, _camPosTarget, Time.deltaTime * _cameraPosLerpSpeed );

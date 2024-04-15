@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _minimumCrashVelocityChange;
     [SerializeField] private bool _hasCrashed;
     [SerializeField] private float _gameStartCrashdetectionDelay = 5f;
+    [SerializeField] private GameObject _crashCamFocusObj;
     private float _startupTimer;
     private Vector3 _lastFrameVelocity;
 
@@ -56,11 +57,20 @@ public class PlayerController : MonoBehaviour
     private float _savedDrag = 0;
     [SerializeField] private CameraController _camControl;
 
+    private GameManager _gm;
+
+    private Vector3 initialPos;
+    private Quaternion initialRot;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _savedDrag = _rb.drag;
 
+        _gm = FindObjectOfType<GameManager>();
+
+        initialPos = transform.position;
+        initialRot = transform.rotation;
 
         //Cursor control and hiding
         Cursor.visible = false;
@@ -91,12 +101,14 @@ public class PlayerController : MonoBehaviour
                 _rb.freezeRotation = false;
                 //_camControl.isPosLerping = false;
                 _camControl.crashCam = true;
-                _camControl.SetCameraPosAndLook( _ragdoll.gameObject, _ragdoll.gameObject);
+                _camControl.SetCameraPosAndLook( _crashCamFocusObj.gameObject, _crashCamFocusObj.gameObject);
 
                 _ragdoll.transform.parent = null;
                 _ragdoll.SetRBOnOff( true );
                 
                 _ragdoll.DisableAnims();
+
+                
             }
 
             if( _startupTimer > _gameStartCrashdetectionDelay )
@@ -118,8 +130,35 @@ public class PlayerController : MonoBehaviour
         else if(_isGrounded) _rb.drag = _savedDrag;
 
         //Quick Level Restart DEBUG
-        if( Input.GetKeyDown( KeyCode.Escape ) ) SceneManager.LoadScene("OutdoorsScene");
-        
+        if( Input.GetKeyDown( KeyCode.Escape ) )
+        {
+            SceneManager.LoadScene( "OutdoorsScene" );
+        }
+        if( Input.GetKeyDown( KeyCode.Space ) && _gameStarted)
+        {
+            _hasCrashed = false;
+            print( "RESET GAME" );
+            _startupTimer = 0;
+            _rb.freezeRotation = true;
+
+            transform.position = initialPos;
+            transform.rotation = initialRot;
+
+            //_camControl.isPosLerping = false;
+            _camControl.crashCam = false;
+            _camControl.ResetCam();
+
+
+            _ragdoll.transform.parent = transform;
+            _ragdoll.EnableAnims();
+            _ragdoll.SetRBOnOff( false );
+            _ragdoll.gameObject.transform.position = transform.position - Vector3.up;
+
+
+            _gm.State5();
+        }
+
+
     }
 
     public void StartGame()
