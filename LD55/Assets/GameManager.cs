@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerCharacter;
     [SerializeField] private Animator _playerAnimator;
     [SerializeField] private CameraController _cameraController;
-    [SerializeField] private Light _sun;
+    [SerializeField] private HDAdditionalLightData _sun;
 
     [SerializeField] private GameState[] _states;
     [SerializeField] private int _currentGameState = 0;
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         UpdateGameState();
-        _sun.color = _sunStartingColor;
+        _sun.flareTint = _sunStartingColor;
     }
 
     // Update is called once per frame
@@ -36,7 +37,11 @@ public class GameManager : MonoBehaviour
             UpdateGameState();
         }
 
-        if( _sunRed ) _sun = Color.Lerp( _sun.color, _sunEndColor, Time.deltaTime * _sunChangeTime );
+        if( _sunRed )
+        {
+            _sun.flareTint = Color.Lerp( _sun.flareTint, _sunEndColor, Time.deltaTime * _sunChangeTime );
+            _sun.surfaceTint = Color.Lerp( _sun.flareTint, _sunEndColor, Time.deltaTime * _sunChangeTime );
+        }
         
     }
 

@@ -53,13 +53,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera _cam;
     [SerializeField] private RagdollController _ragdoll;
     private Rigidbody _rb;
+    private float _savedDrag = 0;
     [SerializeField] private CameraController _camControl;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _savedDrag = _rb.drag;
 
-        
 
         //Cursor control and hiding
         Cursor.visible = false;
@@ -108,7 +109,13 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if( !_isGrounded && _gameStarted ) _rb.AddForce( _forceAddWhenInAir * Time.deltaTime );
+        if( !_isGrounded && _gameStarted && _rb.drag > 0)
+        {
+            //_rb.AddForce( _forceAddWhenInAir * Time.deltaTime );
+            _savedDrag = _rb.drag;
+            _rb.drag = 0;
+        }
+        else if(_isGrounded) _rb.drag = _savedDrag;
 
         //Quick Level Restart DEBUG
         if( Input.GetKeyDown( KeyCode.Escape ) ) SceneManager.LoadScene("OutdoorsScene");
