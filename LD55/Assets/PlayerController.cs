@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     [Header( "Crash Settings" )]
     [SerializeField] private float _minimumCrashVelocityChange;
-    [SerializeField] private bool _hasCrashed;
+    [SerializeField] public bool _hasCrashed;
     [SerializeField] private float _gameStartCrashdetectionDelay = 5f;
     [SerializeField] private GameObject _crashCamFocusObj;
     private float _startupTimer;
@@ -57,6 +57,18 @@ public class PlayerController : MonoBehaviour
     private float _savedDrag = 0;
     [SerializeField] private CameraController _camControl;
 
+    [Header( "ProgressTracker" )]
+
+    public GameObject _startProgressMarker;
+    public GameObject _winProgresMarker;
+    private float _currentProgress;
+    private float _progressPercentage;
+    public bool _won;
+    private float _progressThreshold = 2500f;
+    [SerializeField] private float _WinProgressPoint;
+    [SerializeField] private Vector2 _sunlightrotBounds;
+    [SerializeField] private GameObject _sunlight;
+
     private GameManager _gm;
 
     private Vector3 initialPos;
@@ -72,11 +84,11 @@ public class PlayerController : MonoBehaviour
         initialPos = transform.position;
         initialRot = transform.rotation;
 
-        //Cursor control and hiding
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        _currentProgress = 0;
 
         //_ragdoll.SetRBOnOff( false );
+
+        PersistentObj.instance.SetUI( 2, false );
     }
 
 
@@ -95,6 +107,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                GetComponent<AudioSource>().Play();
+
                 if( _camControl.crashCam == false) _ragdoll.MultiplyVelocity( _crashMultiplier );
 
                 //CRASHED!
@@ -108,7 +122,8 @@ public class PlayerController : MonoBehaviour
                 
                 _ragdoll.DisableAnims();
 
-                
+                if ( _progressPercentage < 0.99f) PersistentObj.instance.SetUI( 1, true );
+
             }
 
             if( _startupTimer > _gameStartCrashdetectionDelay )
@@ -118,6 +133,8 @@ public class PlayerController : MonoBehaviour
                 _startupTimer += Time.deltaTime;
                 _lastFrameVelocity = _rb.velocity;
             }
+
+
 
         }
 
@@ -132,10 +149,22 @@ public class PlayerController : MonoBehaviour
         //Quick Level Restart DEBUG
         if( Input.GetKeyDown( KeyCode.Escape ) )
         {
+            _progressPercentage = 0;
+            _currentProgress = 0;
+
+            PersistentObj.instance.SetUI( 2, false );
             SceneManager.LoadScene( "OutdoorsScene" );
+            PersistentObj.instance.SetUI( 1, false );
+            PersistentObj.instance.SetUI( 2, false );
+            _won = false;
+
         }
         if( Input.GetKeyDown( KeyCode.Space ) && _gameStarted)
         {
+            _won = false;
+            PersistentObj.instance.SetUI( 2, false );
+
+
             _hasCrashed = false;
             print( "RESET GAME" );
             _startupTimer = 0;
@@ -146,8 +175,7 @@ public class PlayerController : MonoBehaviour
 
             //_camControl.isPosLerping = false;
             _camControl.crashCam = false;
-            _camControl.ResetCam();
-
+            _camControl.isPosLerping = true;
 
             _ragdoll.transform.parent = transform;
             _ragdoll.EnableAnims();
@@ -156,8 +184,27 @@ public class PlayerController : MonoBehaviour
 
 
             _gm.State5();
+
+            _camControl.ResetCam();
+
+            PersistentObj.instance.SetUI( 1, false );
         }
 
+        _currentProgress = Mathf.Clamp(1 - (transform.transform.position.z - _winProgresMarker.transform.position.z / Mathf.Abs( _startProgressMarker.transform.position.z - _winProgresMarker.transform.position.z )) + 200,0, _progressThreshold );
+
+        _progressPercentage = ( _currentProgress / ( float )_progressThreshold );
+
+        if (PersistentObj.instance != null) PersistentObj.instance.ChangeProgressUI( (( int )( _progressPercentage * 1000 ) / 10f ).ToString() + "%" );
+
+        _sunlight.transform.rotation = Quaternion.Euler( Mathf.Lerp(_sunlightrotBounds.x, _sunlightrotBounds.y, _progressPercentage*_progressPercentage), 0, 0 );
+
+        //WE WIN
+        if( _progressPercentage > 0.99f && !_won)
+        {
+            _won = true;
+            _camControl.isPosLerping = false;
+            PersistentObj.instance.SetUI( 2, true );
+        }
 
     }
 
@@ -168,6 +215,7 @@ public class PlayerController : MonoBehaviour
             _rb.isKinematic = false;
             _gameStarted = true;
             _rb.velocity = _startingVelocity;
+            _won = false;
         }
         else Debug.Log( "Error, Bike RB missing?" );
 
