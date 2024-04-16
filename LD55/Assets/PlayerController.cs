@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
         {
             _won = false;
             PersistentObj.instance.SetUI( 2, false );
-
+            PersistentObj.instance.SetUI( 1, false );
 
             _hasCrashed = false;
             print( "RESET GAME" );
@@ -187,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
             _camControl.ResetCam();
 
-            PersistentObj.instance.SetUI( 1, false );
+            //PersistentObj.instance.SetUI( 1, false );
         }
 
         _currentProgress = Mathf.Clamp(1 - (transform.transform.position.z - _winProgresMarker.transform.position.z / Mathf.Abs( _startProgressMarker.transform.position.z - _winProgresMarker.transform.position.z )) + 200,0, _progressThreshold );
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
 
         if (PersistentObj.instance != null) PersistentObj.instance.ChangeProgressUI( (( int )( _progressPercentage * 1000 ) / 10f ).ToString() + "%" );
 
-        _sunlight.transform.rotation = Quaternion.Euler( Mathf.Lerp(_sunlightrotBounds.x, _sunlightrotBounds.y, _progressPercentage*_progressPercentage), 0, 0 );
+        _sunlight.transform.rotation = Quaternion.Euler( Mathf.Lerp(_sunlightrotBounds.x, _sunlightrotBounds.y, _progressPercentage*_progressPercentage* _progressPercentage ), 0, 0 );
 
         //WE WIN
         if( _progressPercentage > 0.99f && !_won)

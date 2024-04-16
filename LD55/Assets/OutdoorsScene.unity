@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.69315153, g: 0.6083279, b: 0.51084524, a: 1}
+  m_IndirectSpecularColor: {r: 0.6931506, g: 0.3121586, b: 0.08913184, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -666,7 +666,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6212
+  m_ColorTemperature: 3065
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -8535,7 +8535,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0f0339029b0055a4cb166978223783b1, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.729
+  m_Volume: 0.644
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -16677,6 +16677,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1784626716413520859, guid: 60ba109689fe2a941947d7e6169b1059,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8168738802953878813, guid: 60ba109689fe2a941947d7e6169b1059,
         type: 3}
       propertyPath: _cam
